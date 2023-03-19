@@ -1,0 +1,6 @@
+/.gradle
+/.idea
+!**/src/main/**
+!**/src/test/**
+*.log
+.allure
