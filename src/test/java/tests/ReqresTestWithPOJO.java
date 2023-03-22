@@ -1,3 +1,7 @@
+package tests;
+
+import model.pojo.LoginBodyModelPojo;
+import model.pojo.LoginResponseModelPojo;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -5,8 +9,9 @@ import static io.restassured.http.ContentType.JSON;
 
 import static io.restassured.RestAssured.get;
 import static org.hamcrest.Matchers.*;
-
-public class ReqresTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+public class ReqresTestWithPOJO {
 
     @Test
     void responseWithCode() {
@@ -58,22 +63,30 @@ public class ReqresTest {
 
     @Test
     void responsePostRegister() {
-        String data = "{\n" +
-                "    \"email\": \"eve.holt@reqres.in\",\n" +
-                "    \"password\": \"pistol\"\n" +
-                "}";
+       // String data = "{\n" +
+       //         "    \"email\": \"eve.holt@reqres.in\",\n" +
+       //         "    \"password\": \"pistol\"\n" +
+       //         "}";
 
-        given()
+        LoginBodyModelPojo loginBody = new LoginBodyModelPojo();
+        loginBody.setEmail("eve.holt@reqres.in");
+        loginBody.setPassword("pistol");
+
+        LoginResponseModelPojo loginResponse = given()
                 .log().uri()
                 .contentType(JSON)
-                .body(data)
+                .body(loginBody)
                 .post("https://reqres.in/api/register")
                 .then()
                 .log().status()
                 .log().body()
                 .statusCode(200)
                 .body("id", is(4))
-                .body("token", is("QpwL5tke4Pnpja7X4"));
+                .extract().as(LoginResponseModelPojo.class);
+
+       // assertEquals("QpwL5tke4Pnpja7X4", loginResponse.getToken());
+        assertThat(loginResponse.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
+
     }
 
     @Test

@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id "io.freefair.lombok" version "6.0.0-m2"
 }
 
 compileTestJava {
@@ -17,7 +18,9 @@ dependencies {
     testImplementation(
             "org.junit.jupiter:junit-jupiter:5.9.1",
             "org.slf4j:slf4j-simple:2.0.6",
-            "io.rest-assured:rest-assured:5.3.0"
+            "io.rest-assured:rest-assured:5.3.0",
+            "com.fasterxml.jackson.core:jackson-databind:2.14.2",
+            "org.assertj:assertj-core:3.24.2"
     )
 }
 
