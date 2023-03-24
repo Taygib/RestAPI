@@ -18,6 +18,19 @@ import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
+import static specs.SpecCode404.RequestSpecCode404;
+import static specs.SpecCode404.ResponseSpecCode404;
+import static specs.SpecCodeAndBody.*;
+import static specs.SpecDelete.RequestSpecDelete;
+import static specs.SpecDelete.ResponseSpecDelete;
+import static specs.SpecGetList.RequestSpecGetList;
+import static specs.SpecGetList.ResponseSpecGetList;
+import static specs.SpecPostCreate.RequestSpecPostCreate;
+import static specs.SpecPostCreate.ResponseSpecPostCreate;
+import static specs.SpecPostRegister.RequestSpecPostRegister;
+import static specs.SpecPostRegister.ResponseSpecPostRegister;
+import static specs.SpecPutUpdate.RequestSpecPutUpdate;
+import static specs.SpecPutUpdate.ResponseSpecPutUpdate;
 
 public class ReqresTestWithLombok {
 
@@ -33,29 +46,22 @@ public class ReqresTestWithLombok {
     @Test
     void responseWithCodeAndBody() {
         step("Проверка значении total и total_pages", () -> {
-            given()
-                    .filter(new AllureRestAssured())
-                    .log().all()
-                    .get("https://reqres.in/api/users?page=2")
+            given(RequestSpecCodeAndBody)
+                    .get("/users?page=2")
                     .then()
-                    .log().all()
-                    .statusCode(200)
-                    .body("total", is(12))
-                    .body("total_pages", is(2));
+                    .spec(ResponseSpecCodeAndBody);
         });
     }
 
     @Test
     void responseWithCode404() {
         step("Проверка статус кода 404", () -> {
-            given()
+            given(RequestSpecCode404)
                     .filter(new AllureRestAssured())
                     .log().uri()
-                    .get("https://reqres.in/api/users/23")
+                    .get("/users/23")
                     .then()
-                    .log().status()
-                    .log().body()
-                    .statusCode(404);
+                    .spec(ResponseSpecCode404);
         });
     }
 
@@ -67,16 +73,11 @@ public class ReqresTestWithLombok {
 
         PostCreateJob CreateJob =
                 step("Добавление нового работника  ", () ->
-                        given()
-                                .filter(new AllureRestAssured())
-                                .log().uri()
-                                .contentType(JSON)
+                        given(RequestSpecPostCreate)
                                 .body(PostCreate)
-                                .post("https://reqres.in/api/users")
+                                .post("/users")
                                 .then()
-                                .log().status()
-                                .log().body()
-                                .statusCode(201)
+                                .spec(ResponseSpecPostCreate)
                                 .extract().as(PostCreateJob.class));
 
         step("Проверка нового работника с именем morpheus и должностю leader", () -> {
@@ -93,17 +94,11 @@ public class ReqresTestWithLombok {
 
         LoginResponseModelLombok loginResponse =
                 step("Регистрация ввод логина и пароля", () ->
-                        given()
-                                .filter(new AllureRestAssured())
-                                .log().uri()
-                                .contentType(JSON)
+                        given(RequestSpecPostRegister)
                                 .body(loginBody)
-                                .post("https://reqres.in/api/register")
+                                .post("/register")
                                 .then()
-                                .log().status()
-                                .log().body()
-                                .statusCode(200)
-                                .body("id", is(4))
+                                .spec(ResponseSpecPostRegister)
                                 .extract().as(LoginResponseModelLombok.class));
 
         step("Проверка токена после регистрации", () -> {
@@ -119,16 +114,11 @@ public class ReqresTestWithLombok {
 
         PutUpdateModel Update =
                 step("Изменение назввание должности работника на zion resident", () ->
-                        given()
-                                .filter(new AllureRestAssured())
-                                .log().uri()
-                                .contentType(JSON)
+                        given(RequestSpecPutUpdate)
                                 .body(PutUpdate)
-                                .put("https://reqres.in/api/users/2")
+                                .put("/users/2")
                                 .then()
-                                .log().status()
-                                .log().body()
-                                .statusCode(200)
+                                .spec(ResponseSpecPutUpdate)
                                 .extract().as(PutUpdateModel.class));
 
         step("Проверка нового названия должности zion resident", () -> {
@@ -140,36 +130,23 @@ public class ReqresTestWithLombok {
     @Test
     void responseDelete() {
         step("Удаление", () -> {
-            given()
+            given(RequestSpecDelete)
                     .filter(new AllureRestAssured())
                     .log().uri()
                     .contentType(JSON)
-                    .delete("https://reqres.in/api/users/2")
+                    .delete("/users/2")
                     .then()
-                    .log().status()
-                    .log().body()
-                    .statusCode(204);
+                    .spec(ResponseSpecDelete);
         });
     }
 
     @Test
     void responseGetList() {
         step("Проверка названия цветов", () -> {
-            given()
-                    .filter(new AllureRestAssured())
-                    .log().uri()
-                    .contentType(JSON)
-                    .get("https://reqres.in/api/unknown")
+            given(RequestSpecGetList)
+                    .get("/unknown")
                     .then()
-                    .log().status()
-                    .log().body()
-                    .statusCode(200)
-                    .body("data.name", hasItem("true red"))
-                    .body("data.name", hasItem("cerulean"))
-                    .body("data.name", hasItem("fuchsia rose"))
-                    .body("data.name", hasItem("aqua sky"))
-                    .body("data.name", hasItem("tigerlily"))
-                    .body("data.name", hasItem("blue turquoise"));
+                    .spec(ResponseSpecGetList);
         });
     }
 }
