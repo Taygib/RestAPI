@@ -9,6 +9,7 @@ import model.lombok.postRegister.LoginResponseModelLombok;
 import model.lombok.putUpdate.PutUpdateModel;
 import model.lombok.putUpdate.ResponsePutUpdateModel;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
@@ -35,6 +36,7 @@ import static specs.SpecPutUpdate.ResponseSpecPutUpdate;
 public class ReqresTestWithLombok {
 
     @Test
+    @Tag("APITest")
     void responseWithCode() {
         step("Проверка статус кода 200", () -> {
             get("https://reqres.in")
@@ -44,6 +46,7 @@ public class ReqresTestWithLombok {
     }
 
     @Test
+    @Tag("APITest")
     void responseWithCodeAndBody() {
         step("Проверка значении total и total_pages", () -> {
             given(RequestSpecCodeAndBody)
@@ -54,11 +57,10 @@ public class ReqresTestWithLombok {
     }
 
     @Test
+    @Tag("APITest")
     void responseWithCode404() {
         step("Проверка статус кода 404", () -> {
             given(RequestSpecCode404)
-                    .filter(new AllureRestAssured())
-                    .log().uri()
                     .get("/users/23")
                     .then()
                     .spec(ResponseSpecCode404);
@@ -66,6 +68,7 @@ public class ReqresTestWithLombok {
     }
 
     @Test
+    @Tag("APITest")
     void responsePostCreate() {
         ResponsePostCreateModel PostCreate = new ResponsePostCreateModel();
         PostCreate.setName("morpheus");
@@ -87,6 +90,7 @@ public class ReqresTestWithLombok {
     }
 
     @Test
+    @Tag("APITest")
     void responsePostRegister() {
         LoginBodyModelLombok loginBody = new LoginBodyModelLombok();
         loginBody.setEmail("eve.holt@reqres.in");
@@ -107,6 +111,7 @@ public class ReqresTestWithLombok {
     }
 
     @Test
+    @Tag("APITest")
     void responsePutUpdate() {
         ResponsePutUpdateModel PutUpdate = new ResponsePutUpdateModel();
         PutUpdate.setName("morpheus");
@@ -128,6 +133,7 @@ public class ReqresTestWithLombok {
     }
 
     @Test
+    @Tag("APITest")
     void responseDelete() {
         step("Удаление", () -> {
             given(RequestSpecDelete)
@@ -141,6 +147,7 @@ public class ReqresTestWithLombok {
     }
 
     @Test
+    @Tag("APITest")
     void responseGetList() {
         step("Проверка названия цветов", () -> {
             given(RequestSpecGetList)

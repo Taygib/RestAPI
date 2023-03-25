@@ -21,7 +21,5 @@ public class SpecCode404 {
             .log(STATUS)
             .log(BODY)
             .expectStatusCode(404)
-            .expectBody("total", is(12))
-            .expectBody("total_pages", is(2))
             .build();
 }

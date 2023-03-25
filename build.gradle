@@ -50,3 +50,12 @@ tasks.withType(Test) {
         }
     }
 }
+test {
+    useJUnitPlatform()
+}
+
+task Rest (type: Test) {
+    useJUnitPlatform() {
+        includeTags("APITest")
+    }
+}
