@@ -11,14 +11,14 @@ import static io.restassured.filter.log.LogDetail.STATUS;
 import static io.restassured.http.ContentType.JSON;
 
 public class SpecDelete {
-    public static RequestSpecification RequestSpecDelete = with()
+    public static RequestSpecification requestSpecDelete = with()
             .filter(new AllureRestAssured())
             .log().uri()
             .contentType(JSON)
             .baseUri("https://reqres.in")
             .basePath("/api");
 
-    public static ResponseSpecification ResponseSpecDelete = new ResponseSpecBuilder()
+    public static ResponseSpecification responseSpecDelete = new ResponseSpecBuilder()
             .log(STATUS)
             .log(BODY)
             .expectStatusCode(204)

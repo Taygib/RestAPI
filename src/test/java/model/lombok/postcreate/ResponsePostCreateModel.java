@@ -1,4 +1,4 @@
-package model.lombok.postCreate;
+package model.lombok.postcreate;
 
 import lombok.Data;
 

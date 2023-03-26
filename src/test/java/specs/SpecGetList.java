@@ -12,14 +12,14 @@ import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.hasItem;
 
 public class SpecGetList {
-    public static RequestSpecification RequestSpecGetList = with()
+    public static RequestSpecification requestSpecGetList = with()
             .filter(new AllureRestAssured())
             .log().uri()
             .contentType(JSON)
             .baseUri("https://reqres.in")
             .basePath("/api");
 
-    public static ResponseSpecification ResponseSpecGetList = new ResponseSpecBuilder()
+    public static ResponseSpecification responseSpecGetList = new ResponseSpecBuilder()
             .log(STATUS)
             .log(BODY)
             .expectStatusCode(200)

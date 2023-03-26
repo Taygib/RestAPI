@@ -9,17 +9,16 @@ import static io.restassured.RestAssured.with;
 import static io.restassured.filter.log.LogDetail.BODY;
 import static io.restassured.filter.log.LogDetail.STATUS;
 import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.is;
 
 public class SpecPutUpdate {
-    public static RequestSpecification RequestSpecPutUpdate = with()
+    public static RequestSpecification requestSpecPutUpdate = with()
             .filter(new AllureRestAssured())
             .log().uri()
             .contentType(JSON)
             .baseUri("https://reqres.in")
             .basePath("/api");
 
-    public static ResponseSpecification ResponseSpecPutUpdate = new ResponseSpecBuilder()
+    public static ResponseSpecification responseSpecPutUpdate = new ResponseSpecBuilder()
             .log(STATUS)
             .log(BODY)
             .expectStatusCode(200)

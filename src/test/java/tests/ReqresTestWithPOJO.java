@@ -9,7 +9,6 @@ import static io.restassured.http.ContentType.JSON;
 
 import static io.restassured.RestAssured.get;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 public class ReqresTestWithPOJO {
 
@@ -63,11 +62,6 @@ public class ReqresTestWithPOJO {
 
     @Test
     void responsePostRegister() {
-       // String data = "{\n" +
-       //         "    \"email\": \"eve.holt@reqres.in\",\n" +
-       //         "    \"password\": \"pistol\"\n" +
-       //         "}";
-
         LoginBodyModelPojo loginBody = new LoginBodyModelPojo();
         loginBody.setEmail("eve.holt@reqres.in");
         loginBody.setPassword("pistol");
@@ -84,9 +78,7 @@ public class ReqresTestWithPOJO {
                 .body("id", is(4))
                 .extract().as(LoginResponseModelPojo.class);
 
-       // assertEquals("QpwL5tke4Pnpja7X4", loginResponse.getToken());
         assertThat(loginResponse.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
-
     }
 
     @Test

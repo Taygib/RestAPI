@@ -1,7 +1,6 @@
 package model.pojo;
 
 public class LoginBodyModelPojo {
-    //"{\n"  "    \"email\": \"eve.holt@reqres.in\",\n"  \"password\": \"pistol\"\n" }";
     String email, password;
 
     public String getEmail() {

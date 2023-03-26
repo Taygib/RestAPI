@@ -1,13 +1,12 @@
 package tests;
 
 import io.qameta.allure.restassured.AllureRestAssured;
-import model.lombok.postCreate.PostCreateJob;
-import model.lombok.postCreate.ResponsePostCreateModel;
-import model.lombok.postRegister.LoginBodyModelLombok;
-import model.lombok.postRegister.LoginResponseModelLombok;
-
-import model.lombok.putUpdate.PutUpdateModel;
-import model.lombok.putUpdate.ResponsePutUpdateModel;
+import model.lombok.postcreate.PostCreateJob;
+import model.lombok.postcreate.ResponsePostCreateModel;
+import model.lombok.postregister.LoginBodyModelLombok;
+import model.lombok.postregister.LoginResponseModelLombok;
+import model.lombok.putupdate.PutUpdateModel;
+import model.lombok.putupdate.ResponsePutUpdateModel;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -17,21 +16,13 @@ import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
-import static specs.SpecCode404.RequestSpecCode404;
-import static specs.SpecCode404.ResponseSpecCode404;
+import static specs.SpecCode404.*;
 import static specs.SpecCodeAndBody.*;
-import static specs.SpecDelete.RequestSpecDelete;
-import static specs.SpecDelete.ResponseSpecDelete;
-import static specs.SpecGetList.RequestSpecGetList;
-import static specs.SpecGetList.ResponseSpecGetList;
-import static specs.SpecPostCreate.RequestSpecPostCreate;
-import static specs.SpecPostCreate.ResponseSpecPostCreate;
-import static specs.SpecPostRegister.RequestSpecPostRegister;
-import static specs.SpecPostRegister.ResponseSpecPostRegister;
-import static specs.SpecPutUpdate.RequestSpecPutUpdate;
-import static specs.SpecPutUpdate.ResponseSpecPutUpdate;
+import static specs.SpecDelete.*;
+import static specs.SpecGetList.*;
+import static specs.SpecPostCreate.*;
+import static specs.SpecPostRegister.*;
+import static specs.SpecPutUpdate.*;
 
 public class ReqresTestWithLombok {
 
@@ -49,10 +40,10 @@ public class ReqresTestWithLombok {
     @Tag("APITest")
     void responseWithCodeAndBody() {
         step("Проверка значении total и total_pages", () -> {
-            given(RequestSpecCodeAndBody)
+            given(requestSpecCodeAndBody)
                     .get("/users?page=2")
                     .then()
-                    .spec(ResponseSpecCodeAndBody);
+                    .spec(responseSpecCodeAndBody);
         });
     }
 
@@ -60,32 +51,32 @@ public class ReqresTestWithLombok {
     @Tag("APITest")
     void responseWithCode404() {
         step("Проверка статус кода 404", () -> {
-            given(RequestSpecCode404)
+            given(requestSpecCode404)
                     .get("/users/23")
                     .then()
-                    .spec(ResponseSpecCode404);
+                    .spec(responseSpecCode404);
         });
     }
 
     @Test
     @Tag("APITest")
     void responsePostCreate() {
-        ResponsePostCreateModel PostCreate = new ResponsePostCreateModel();
-        PostCreate.setName("morpheus");
-        PostCreate.setJob("leader");
+        ResponsePostCreateModel postCreate = new ResponsePostCreateModel();
+        postCreate.setName("morpheus");
+        postCreate.setJob("leader");
 
-        PostCreateJob CreateJob =
+        PostCreateJob createJob =
                 step("Добавление нового работника  ", () ->
-                        given(RequestSpecPostCreate)
-                                .body(PostCreate)
+                        given(requestSpecPostCreate)
+                                .body(postCreate)
                                 .post("/users")
                                 .then()
-                                .spec(ResponseSpecPostCreate)
+                                .spec(responseSpecPostCreate)
                                 .extract().as(PostCreateJob.class));
 
         step("Проверка нового работника с именем morpheus и должностю leader", () -> {
-            assertThat(CreateJob.getJob()).isEqualTo("leader");
-            assertThat(CreateJob.getName()).isEqualTo("morpheus");
+            assertThat(createJob.getJob()).isEqualTo("leader");
+            assertThat(createJob.getName()).isEqualTo("morpheus");
         });
     }
 
@@ -98,11 +89,11 @@ public class ReqresTestWithLombok {
 
         LoginResponseModelLombok loginResponse =
                 step("Регистрация ввод логина и пароля", () ->
-                        given(RequestSpecPostRegister)
+                        given(requestSpecPostRegister)
                                 .body(loginBody)
                                 .post("/register")
                                 .then()
-                                .spec(ResponseSpecPostRegister)
+                                .spec(responseSpecPostRegister)
                                 .extract().as(LoginResponseModelLombok.class));
 
         step("Проверка токена после регистрации", () -> {
@@ -113,22 +104,22 @@ public class ReqresTestWithLombok {
     @Test
     @Tag("APITest")
     void responsePutUpdate() {
-        ResponsePutUpdateModel PutUpdate = new ResponsePutUpdateModel();
-        PutUpdate.setName("morpheus");
-        PutUpdate.setJob("zion resident");
+        ResponsePutUpdateModel putUpdate = new ResponsePutUpdateModel();
+        putUpdate.setName("morpheus");
+        putUpdate.setJob("zion resident");
 
-        PutUpdateModel Update =
+        PutUpdateModel update =
                 step("Изменение назввание должности работника на zion resident", () ->
-                        given(RequestSpecPutUpdate)
-                                .body(PutUpdate)
+                        given(requestSpecPutUpdate)
+                                .body(putUpdate)
                                 .put("/users/2")
                                 .then()
-                                .spec(ResponseSpecPutUpdate)
+                                .spec(responseSpecPutUpdate)
                                 .extract().as(PutUpdateModel.class));
 
         step("Проверка нового названия должности zion resident", () -> {
-            assertThat(Update.getName()).isEqualTo("morpheus");
-            assertThat(Update.getJob()).isEqualTo("zion resident");
+            assertThat(update.getName()).isEqualTo("morpheus");
+            assertThat(update.getJob()).isEqualTo("zion resident");
         });
     }
 
@@ -136,13 +127,13 @@ public class ReqresTestWithLombok {
     @Tag("APITest")
     void responseDelete() {
         step("Удаление", () -> {
-            given(RequestSpecDelete)
+            given(requestSpecDelete)
                     .filter(new AllureRestAssured())
                     .log().uri()
                     .contentType(JSON)
                     .delete("/users/2")
                     .then()
-                    .spec(ResponseSpecDelete);
+                    .spec(responseSpecDelete);
         });
     }
 
@@ -150,10 +141,10 @@ public class ReqresTestWithLombok {
     @Tag("APITest")
     void responseGetList() {
         step("Проверка названия цветов", () -> {
-            given(RequestSpecGetList)
+            given(requestSpecGetList)
                     .get("/unknown")
                     .then()
-                    .spec(ResponseSpecGetList);
+                    .spec(responseSpecGetList);
         });
     }
 }

@@ -1,4 +1,4 @@
-package model.lombok.postRegister;
+package model.lombok.postregister;
 
 import lombok.Data;
 

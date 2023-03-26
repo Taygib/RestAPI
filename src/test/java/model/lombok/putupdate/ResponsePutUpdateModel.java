@@ -1,4 +1,4 @@
-package model.lombok.putUpdate;
+package model.lombok.putupdate;
 
 import lombok.Data;
 
