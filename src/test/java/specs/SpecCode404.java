@@ -5,12 +5,13 @@ import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
+import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.restassured.RestAssured.with;
 import static io.restassured.filter.log.LogDetail.*;
 
 public class SpecCode404 {
     public static RequestSpecification requestSpecCode404 = with()
-            .filter(new AllureRestAssured())
+            .filter(withCustomTemplates())
             .log().uri()
             .baseUri("https://reqres.in")
             .basePath("/api");
